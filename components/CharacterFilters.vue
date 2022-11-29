@@ -1,6 +1,6 @@
 <template lang="pug">
-#character-filters.bg-gray
-    .flex.justify-between.px-8.py-4.cursor-pointer(
+#character-filters.border-2.border-gray
+    .flex.justify-between.px-8.py-6.cursor-pointer(
         v-on:click="showFilters = !showFilters"
     )
         h2.text-lg Filters
@@ -13,50 +13,102 @@
                 v-else-if="showFilters"
             ) hide)
 
-    div(
-        v-if="showFilters"
+    .px-8.pt-4.pb-8(
+        v-show="showFilters"
     )
-        #film-filters
-            p Movies
+        #film-filters.mt-6(
+            class="md:flex"
+        )
+            p(
+                class="md:w-1/6"
+            ) Movies
 
-            .film-filter(
-                v-for="film in films"
+            .grid.gap-6.mt-4(
+                class="md:grid-cols-2 md:mt-0"
             )
-                input(
-                    type="checkbox"
-                    :value="film"
-                    v-model="filmFilter"
+                .bg-gray.px-4.py-2(
+                    v-for="film in films"
                 )
+                    input(
+                        type="checkbox"
+                        :value="film"
+                        v-model="filters.films"
+                    )
 
-                CharacterResource(
-                    :url="film"
-                    attribute="title"
+                    CharacterResource.ml-3(
+                        :url="film"
+                        attribute="title"
+                    )
+
+        #species-filters.mt-12(
+            class="md:flex"
+        )
+            p(
+                class="md:w-1/6"
+            ) Species
+
+            .grid.gap-3.mt-4(
+                class="md:grid-cols-2 md:mt-0"
+            )
+                .bg-gray.px-4.py-2(
+                    v-for="species in species"
                 )
+                    input(
+                        type="checkbox"
+                        :value="species"
+                        v-model="filters.species"
+                    )
 
-            p {{ filmFilter }}
+                    CharacterResource.ml-3(
+                        :url="species"
+                        attribute="name"
+                    )
 </template>
 
-<script setup lang="ts">
-const props = defineProps({
-    characters: Object
-})
+<script lang="ts">
+export default defineNuxtComponent({
+    props: {
+        characters: Object,
+        filters: Object
+    },
+    data () {
+        return {
+            showFilters: false,
+        }
+    },
+    computed: {
+        films() {
+            return this.getFilterOptions(this.$props, 'films')
+        },
+        species() {
+            return this.getFilterOptions(this.$props, 'species')
+        }
+    },
+    methods: {
+        getFilterOptions(props: object, key: string) {
+            if (props && key) {
+                const options = [...new Set(
+                    props.characters.results.flatMap(
+                        character => character[key].map(option => option))
+                    )
+                ]
 
-const showFilters = false
+                options.sort((a: string, b: string) => {
+                    const identifierA = a.match(`/${key}/([0-9]+)/`)[1]
+                    const identifierB = b.match(`/${key}/([0-9]+)/`)[1]
 
-const films = [...new Set(
-    props.characters.results.flatMap(
-        character => character.films.map(film => film))
-    )
-]
+                    if (identifierA && identifierB) {
+                        return parseInt(identifierA) - parseInt(identifierB)
+                    }
+                })
 
-films.sort((a: string, b: string) => {
-    const identifierA = a.match(`/films/([0-9]+)/`)[1]
-    const identifierB = b.match(`/films/([0-9]+)/`)[1]
+                this.filters[key] = [...options]
 
-    if (identifierA && identifierB) {
-        return parseInt(identifierA) - parseInt(identifierB)
+                return options
+            } else {
+                return false
+            }
+        }
     }
 })
-
-const filmFilter = []
 </script>

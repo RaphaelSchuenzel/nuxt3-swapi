@@ -2,10 +2,11 @@
 #character-list
     CharacterFilters(
         :characters="characters"
+        :filters="filters"
     )
 
-    #characters.mt-12(
-        class="sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-5 xl:grid-cols-4"
+    #characters.mt-12.grid.gap-5(
+        class="sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
     )
         .character.mt-6.p-6.text-center.border-2.border-primary(
             v-for="character in filteredCharacters"
@@ -36,6 +37,10 @@ export default defineNuxtComponent({
     data () {
         return {
             loadingCharacters: false,
+            filters: {
+                films: [],
+                species: []
+            }
         }
     },
     async asyncData () {
