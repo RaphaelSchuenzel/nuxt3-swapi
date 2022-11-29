@@ -33,6 +33,7 @@
                         type="checkbox"
                         :value="film"
                         v-model="filters.films"
+                        v-on:change="hasFiltered = true"
                     )
 
                     CharacterResource.ml-3(
@@ -40,8 +41,19 @@
                         attribute="title"
                     )
 
-        #species-filters.mt-12(
-            class="md:flex"
+        .mt-12.border-2.p-4
+            p Note: Species attribute (particularly "Human" type) does not seem to be reliably provided by the Swapi API, filtering for species has thus been disabled by default.
+
+            .mt-8
+                a.inline-block.px-8.py-4.bg-gray.cursor-pointer(
+                    v-on:click="$emit('toggleSpeciesFilter')"
+                ) 
+                   span(v-if="!enableSpeciesFilter") Enable 
+                   span(v-if="enableSpeciesFilter") Disable 
+                   | Species Filtering
+
+        #species-filters.mt-6(
+            :class="[ 'md:flex', { 'opacity-50': !enableSpeciesFilter }]"
         )
             p(
                 class="md:w-1/6"
@@ -57,6 +69,7 @@
                         type="checkbox"
                         :value="species"
                         v-model="filters.species"
+                        v-on:change="hasFiltered = true"
                     )
 
                     CharacterResource.ml-3(
@@ -78,11 +91,16 @@ export default defineNuxtComponent({
         filters: {
             type: Object,
             required: true,
-        }
+        },
+        enableSpeciesFilter: {
+            type: Boolean,
+            required: true,
+        },
     },
     data () {
         return {
             showFilters: false,
+            hasFiltered: false,
         }
     },
     computed: {
@@ -114,8 +132,10 @@ export default defineNuxtComponent({
                         return parseInt(identifierA) - parseInt(identifierB)
                     }
                 })
-
-                this.filters[key] = [...options]
+                
+                if (!this.hasFiltered) {
+                    this.filters[key] = [...options]
+                }
 
                 return options
             } else {
