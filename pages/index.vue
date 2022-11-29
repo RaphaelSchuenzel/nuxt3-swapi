@@ -8,12 +8,10 @@
     #characters.mt-12.grid.gap-5(
         class="sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
     )
-        .character.mt-6.p-6.text-center.border-2.border-primary(
+        NuxtLink.text-xl.mt-6.p-6.text-center.border-2.border-primary(
+            :to="getCharacterUrl(character.url)"
             v-for="character in filteredCharacters"
-        )
-            NuxtLink.text-xl.character-name(
-                :to="getCharacterUrl(character.url)"
-            ) {{ character.name }}
+        ) {{ character.name }}
 
     .flex.justify-center.mt-24
         .px-8.py-4.bg-gray.cursor-pointer(
@@ -31,6 +29,8 @@
 </template>
 
 <script lang="ts">
+import type { Characters } from '~/types'
+
 const baseURL = `https://swapi.dev/api/`
 
 export default defineNuxtComponent({
@@ -50,7 +50,7 @@ export default defineNuxtComponent({
     },
     computed: {
         filteredCharacters () {
-            return this.characters.results
+            return (this as any).characters.results
         }
     },
     methods: {
@@ -63,12 +63,13 @@ export default defineNuxtComponent({
             if (!this.loadingCharacters && next) {
                 this.loadingCharacters = true
 
-                const res = await $fetch(next)
+                const res: Characters = await $fetch(next)
 
                 if (res) {
-                    this.characters.next = res.next
-                    this.characters.previous = res.previous
-                    this.characters.results.push(...res.results)
+                    (this as any).characters
+                        .next = res.next
+                        .previous = res.previous
+                        .results.push(...res.results)
 
                     return this.loadingCharacters = false
                 } else {

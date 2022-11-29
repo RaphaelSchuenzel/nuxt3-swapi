@@ -66,10 +66,19 @@
 </template>
 
 <script lang="ts">
+import type { Characters } from '~/types'
+import type { PropType } from 'vue'
+
 export default defineNuxtComponent({
     props: {
-        characters: Object,
-        filters: Object
+        characters: {
+            type: Object as PropType<Characters>,
+            required: true,
+        },
+        filters: {
+            type: Object,
+            required: true,
+        }
     },
     data () {
         return {
@@ -78,20 +87,24 @@ export default defineNuxtComponent({
     },
     computed: {
         films() {
-            return this.getFilterOptions(this.$props, 'films')
+            return this.getFilterOptions('films')
         },
         species() {
-            return this.getFilterOptions(this.$props, 'species')
+            return this.getFilterOptions('species')
         }
     },
     methods: {
-        getFilterOptions(props: object, key: string) {
+        getFilterOptions(key: string) {
+            const props = this.$props
+
             if (props && key) {
                 const options = [...new Set(
                     props.characters.results.flatMap(
-                        character => character[key].map(option => option))
+                        character => character[key].map(
+                            option => option
+                        )
                     )
-                ]
+                )]
 
                 options.sort((a: string, b: string) => {
                     const identifierA = a.match(`/${key}/([0-9]+)/`)[1]
