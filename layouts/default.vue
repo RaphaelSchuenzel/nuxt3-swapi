@@ -1,6 +1,6 @@
 <template lang="pug">
 #app
-    main.container.mx-auto.text-white
+    main.container.mx-auto.text-white.py-24
         NuxtLoadingIndicator(
             color="#FFE81F"
         )
