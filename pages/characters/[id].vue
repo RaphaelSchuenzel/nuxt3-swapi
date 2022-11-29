@@ -1,45 +1,84 @@
 <template lang="pug">
-.character
-    h1 {{ character.name }}
+.character.border-2.border-primary.p-8(
+    class="md:p-16"
+)
+    h1.text-2xl {{ character.name }}
 
-    .mt-6(
-        v-if="!isArrayEmpty(character.species)"
-    )
-        h2 Species
-        
-        p(
-            v-for="species in character.species"
+    .mt-16
+        .items-center.mt-6(
+            class="md:flex"
         )
-            CharacterResource(
-                :url="species"
-                attribute="name"
+            h2(
+                class="md:w-1/6"
+            ) Species
+            
+            .grid.gap-3.mt-4(
+                class="md:grid-cols-2 md:mt-0"
             )
+                .bg-gray.px-4.py-2(
+                    class="md:ml-4"
+                    v-if="!isArrayEmpty(character.species)"
+                    v-for="species in character.species"
+                )
+                    CharacterResource(
+                        :url="species"
+                        attribute="name"
+                    )
 
-    .mt-4(
-        v-if="!isArrayEmpty(character.films)"
-    )
-        h2 Movies
+                div(
+                    class="md:px-4 md:py-2 md:ml-4"
+                    v-else
+                ) N/A
 
-        p(
-            v-for="film in character.films"
+        .items-center.mt-6(
+            class="md:flex"
         )
-            CharacterResource(
-                :url="film"
-                attribute="title"
+            h2(
+                class="md:w-1/6"
+            ) Movies
+
+            .grid.gap-3.mt-4(
+                class="md:grid-cols-2 md:mt-0"
             )
+                .bg-gray.px-4.py-2(
+                    class="md:ml-4"
+                    v-if="!isArrayEmpty(character.films)"
+                    v-for="film in character.films"
+                )
+                    CharacterResource(
+                        :url="film"
+                        attribute="title"
+                    )
 
-    .mt-4(
-        v-if="!isArrayEmpty(character.starships)"
-    )
-        h2 Spaceships
+                div(
+                    class="md:px-4 md:py-2 md:ml-4"
+                    v-else
+                ) N/A
 
-        p(
-            v-for="starship in character.starships"
+        .items-center.mt-6(
+            class="md:flex"
         )
-            CharacterResource(
-                :url="starship"
-                attribute="name"
+            h2(
+                class="md:w-1/6"
+            ) Spaceships
+
+            .grid.gap-3.mt-4(
+                class="md:grid-cols-2 md:mt-0"
             )
+                .bg-gray.px-4.py-2(
+                    class="md:ml-4"
+                    v-if="!isArrayEmpty(character.starships)"
+                    v-for="starship in character.starships"
+                )
+                    CharacterResource(
+                        :url="starship"
+                        attribute="name"
+                    )
+
+                div(
+                    class="md:px-4 md:py-2 md:ml-4"
+                    v-else
+                ) N/A
 </template>
 
 <script lang="ts">
@@ -61,5 +100,3 @@ export default defineNuxtComponent({
     }
 })
 </script>
-
-<style lang="sass" scoped></style>

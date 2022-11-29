@@ -10,7 +10,7 @@
         .character.mt-6.p-6.text-center.border-2.border-primary(
             v-for="character in filteredCharacters"
         )
-            NuxtLink.text-xl.font-bold.character-name(
+            NuxtLink.text-xl.character-name(
                 :to="getCharacterUrl(character.url)"
             ) {{ character.name }}
 
@@ -76,9 +76,3 @@ export default defineNuxtComponent({
     }
 })
 </script>
-
-<style lang="sass" scoped>
-.character
-    .character-name
-        transform: rotate3d(1,0,0,12deg) translateY(-20px)
-</style>
