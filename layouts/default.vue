@@ -1,9 +1,14 @@
 <template lang="pug">
 #app
-    main
-        NuxtLoadingIndicator
-        
+    main.container.mx-auto.text-white
+        NuxtLoadingIndicator(
+            color="#FFE81F"
+        )
+
         slot
 </template>
 
-<style lang="sass" scoped></style>
+<style lang="sass">
+html, body
+    background: #000
+</style>
