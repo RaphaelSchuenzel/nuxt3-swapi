@@ -1,27 +1,27 @@
 <template lang="pug">
 #character-list
-    div.text-center.pt-24.pb-32
-        h1.text-2xl
-            span.text-primary Star Wars 
-            span Character List
+    CharacterFilters(
+        :characters="characters"
+    )
 
-    #characters.grid.grid-cols-5.gap-5
-        .character.mt-6.p-6.text-center(
-            v-for="character in data.results"
+    #characters.mt-12(
+        class="sm:grid sm:grid-cols-2 md:grid-cols-3 md:gap-5 xl:grid-cols-4"
+    )
+        .character.mt-6.p-6.text-center.border-2.border-primary(
+            v-for="character in filteredCharacters"
         )
-            NuxtLink(
+            NuxtLink.text-xl.font-bold.character-name(
                 :to="getCharacterUrl(character.url)"
-            )
-                span.text-xl.character-text {{ character.name }}
+            ) {{ character.name }}
 
     .flex.justify-center.mt-24
-        .px-8.py-4.border-2.border-primary(
-            :class="{ 'pointer-events-none saturate-0 opacity-50': !data.next || loadingCharacters }"
-            v-on:click="loadCharacters(data.next)"
-            v-if="data.next"
+        .px-8.py-4.bg-gray.cursor-pointer(
+            :class="{ 'pointer-events-none opacity-50': !characters.next || loadingCharacters }"
+            v-on:click="loadCharacters(characters.next)"
+            v-if="characters.next"
         )
             span(
-                v-if="data.next && !loadingCharacters"
+                v-if="characters.next && !loadingCharacters"
             ) Load More
 
             span(
@@ -40,7 +40,12 @@ export default defineNuxtComponent({
     },
     async asyncData () {
         return {
-            data: await $fetch(`people`, { baseURL })
+            characters: await $fetch(`people`, { baseURL })
+        }
+    },
+    computed: {
+        filteredCharacters () {
+            return this.characters.results
         }
     },
     methods: {
@@ -56,9 +61,9 @@ export default defineNuxtComponent({
                 const res = await $fetch(next)
 
                 if (res) {
-                    this.data.next = res.next
-                    this.data.previous = res.previous
-                    this.data.results.push(...res.results)
+                    this.characters.next = res.next
+                    this.characters.previous = res.previous
+                    this.characters.results.push(...res.results)
 
                     return this.loadingCharacters = false
                 } else {
@@ -74,6 +79,6 @@ export default defineNuxtComponent({
 
 <style lang="sass" scoped>
 .character
-    .character-text
+    .character-name
         transform: rotate3d(1,0,0,12deg) translateY(-20px)
 </style>

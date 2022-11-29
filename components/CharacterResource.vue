@@ -1,15 +1,11 @@
 <template lang="pug">
-p {{ data[props.attribute] }}
+span {{ data[props.attribute] }}
 </template>
 
-<script setup>
+<script setup lang="ts">
 const props = defineProps({
-    url: {
-        type: String,
-    },
-    attribute: {
-        type: String,
-    }
+    url: String,
+    attribute: String
 })
 
 const { data } = await useFetch(props.url)

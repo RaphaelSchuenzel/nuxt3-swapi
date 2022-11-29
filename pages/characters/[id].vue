@@ -7,33 +7,39 @@
     )
         h2 Species
         
-        CharacterResource(
+        p(
             v-for="species in character.species"
-            :url="species"
-            attribute="name"
         )
+            CharacterResource(
+                :url="species"
+                attribute="name"
+            )
 
     .mt-4(
         v-if="!isArrayEmpty(character.films)"
     )
         h2 Movies
 
-        CharacterResource(
+        p(
             v-for="film in character.films"
-            :url="film"
-            attribute="title"
         )
+            CharacterResource(
+                :url="film"
+                attribute="title"
+            )
 
     .mt-4(
         v-if="!isArrayEmpty(character.starships)"
     )
         h2 Spaceships
 
-        CharacterResource(
+        p(
             v-for="starship in character.starships"
-            :url="starship"
-            attribute="name"
         )
+            CharacterResource(
+                :url="starship"
+                attribute="name"
+            )
 </template>
 
 <script lang="ts">
