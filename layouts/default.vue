@@ -1,6 +1,8 @@
 <template lang="pug">
 #app
     main
+        NuxtLoadingIndicator
+        
         slot
 </template>
 

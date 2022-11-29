@@ -18,7 +18,7 @@ export default defineNuxtComponent({
         }
     },
     methods: {
-        getCharacterUrl: (url: String) => {
+        getCharacterUrl: (url: string) => {
             const match = url.match(`/people/([0-9]+)/`)
 
             return (match && match[1]) ? `/characters/${match[1]}` : false
