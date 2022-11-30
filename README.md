@@ -1,6 +1,6 @@
-# Nuxt 3 Minimal Starter
+# nuxt3-swapi
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A simple [Nuxt 3](https://nuxt.com/) app built around the [Star Wars API](https://swapi.dev/).
 
 ## Setup
 
@@ -38,5 +38,3 @@ Locally preview production build:
 ```bash
 npm run preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
