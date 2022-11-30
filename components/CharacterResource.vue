@@ -2,7 +2,7 @@
 span {{ data[props.attribute] }}
 </template>
 
-<script setup lang="ts">
+<script setup>
 const props = defineProps({
     url: String,
     attribute: String

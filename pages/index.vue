@@ -8,9 +8,10 @@
     )
 
     #characters.mt-12.grid.gap-5(
-        class="sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
+        class="sm:grid-cols-2 md:grid-cols-3"
     )
         NuxtLink.text-xl.mt-6.p-6.text-center.border-2.border-primary(
+            class="hover:bg-primary hover:text-black"
             :to="getCharacterLink(character)"
             v-for="character in filteredCharacters"
         ) {{ character.name }}
@@ -63,8 +64,6 @@ export default defineNuxtComponent({
                     filters.films.some(film => character.films.includes(film))
                 const isWithinSpeciesFilter =
                     filters.species.some(species => character.species.includes(species))
-
-                console.log(enableSpeciesFilter ? isWithinFilmsFilter : true)
 
                 return isWithinFilmsFilter && (enableSpeciesFilter ? isWithinSpeciesFilter : true)
                     ? character

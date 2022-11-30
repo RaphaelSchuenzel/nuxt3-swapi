@@ -1,11 +1,14 @@
 <template lang="pug">
 #character-filters.border-2.border-gray
-    .flex.justify-between.px-8.py-6.cursor-pointer(
+    .px-8.py-6.cursor-pointer(
+        class="sm:flex sm:justify-between"
         v-on:click="showFilters = !showFilters"
     )
         h2.text-lg Filters
 
-        p (click to 
+        p.mt-2(
+            class="sm:mt-0"
+        ) (click to 
             span(
                 v-if="!showFilters"
             ) show)
@@ -44,7 +47,7 @@
         .mt-12.border-2.p-4
             p Note: Species attribute (particularly "Human" type) does not seem to be reliably provided by the Swapi API, filtering for species has thus been disabled by default.
 
-            .mt-8
+            .mt-4
                 a.inline-block.px-8.py-4.bg-gray.cursor-pointer(
                     v-on:click="$emit('toggleSpeciesFilter')"
                 ) 
@@ -53,7 +56,7 @@
                    | Species Filtering
 
         #species-filters.mt-6(
-            :class="[ 'md:flex', { 'opacity-50': !enableSpeciesFilter }]"
+            :class="['md:flex', { 'opacity-50': !enableSpeciesFilter }]"
         )
             p(
                 class="md:w-1/6"
@@ -118,13 +121,14 @@ export default defineNuxtComponent({
             if (props && key) {
                 const options = [...new Set(
                     props.characters.results.flatMap(
-                        character => character[key].map(
-                            option => option
+                        (character:any) => character[key].map(
+                            (option:Object) => option
                         )
                     )
                 )]
-
-                options.sort((a: string, b: string) => {
+                
+                // @ts-ignore
+                options.sort((a, b) => {
                     const identifierA = a.match(`/${key}/([0-9]+)/`)[1]
                     const identifierB = b.match(`/${key}/([0-9]+)/`)[1]
 
